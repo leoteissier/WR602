@@ -10,7 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+#[ORM\HasLifecycleCallbacks] // This annotation is used to call the setCreatedAt() method before the entity is persisted and updated.
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -167,6 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->created_at;
     }
 
+    #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -179,6 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->update_at;
     }
 
+    #[ORM\PreUpdate] // This annotation is used to call the setUpdatedAt() method before the entity is updated.
     public function setUpdateAt(?\DateTimeInterface $update_at): static
     {
         $this->update_at = $update_at;
