@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $firstname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $subcription_end_at = null;
+    private ?\DateTimeInterface $subcriptionEndAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -154,12 +154,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSubcriptionEndAt(): ?\DateTimeInterface
     {
-        return $this->subcription_end_at;
+        return $this->subcriptionEndAt;
     }
 
-    public function setSubcriptionEndAt(?\DateTimeInterface $subcription_end_at): static
+    public function setSubcriptionEndAt(?\DateTimeInterface $subcriptionEndAt): static
     {
-        $this->subcription_end_at = $subcription_end_at;
+        $this->subcriptionEndAt = $subcriptionEndAt;
 
         return $this;
     }
