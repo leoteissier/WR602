@@ -16,10 +16,10 @@ class Pdf
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'pdfs')]
-    private ?User $user_id = null;
+    private ?User $userId = null;
 
     public function getId(): ?int
     {
@@ -28,25 +28,25 @@ class Pdf
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
-    public function setUserId(?User $user_id): static
+    public function setUserId(?User $userId): static
     {
-        $this->user_id = $user_id;
+        $this->userId = $userId;
 
         return $this;
     }
