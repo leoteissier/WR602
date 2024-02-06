@@ -32,7 +32,8 @@ class Subscription
     #[ORM\Column(length: 255)]
     private ?string $media = null;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'subcription_id')]
+    /** @var Collection<int, User> */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'subcriptionId')]
     private Collection $users;
 
     public function __construct()

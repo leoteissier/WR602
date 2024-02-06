@@ -23,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -50,7 +53,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $subcriptionId = null;
 
-    #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'user_id')]
+    /** @var Collection<int, Pdf> */
+    #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'userId')]
     private Collection $pdfs;
 
     public function __construct()
@@ -97,6 +101,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
