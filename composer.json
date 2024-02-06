@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.11",
@@ -93,7 +93,10 @@
         }
     },
     "require-dev": {
+        "phpmd/phpmd": "^2.15",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.8",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
         "symfony/debug-bundle": "6.3.*",
