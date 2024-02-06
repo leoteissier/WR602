@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Subscription;
+use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class SubscriptionTest extends TestCase
@@ -17,7 +18,7 @@ class SubscriptionTest extends TestCase
         $description = 'Test';
         $pdfLimit = 10;
         $price = 10.0;
-        $media = 'Test';
+        $media = 'Test.jpg';
 
         // Utilisation des setters
         $subscription->setTitle($title);

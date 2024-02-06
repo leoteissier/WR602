@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Subscription;
 use App\Entity\User;
+use App\Entity\Pdf;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -21,8 +22,10 @@ class UserTest extends TestCase
         $roles = ['ROLE_USER'];
         $subcriptionEndAt = new \DateTime();
         $createdAt = new \DateTimeImmutable();
+        $updateAt = new \DateTime();
 
         $subcriptionId = new Subscription();
+        $pdfs = new Pdf();
 
         // Utilisation des setters
         $user->setEmail($email);
@@ -32,8 +35,10 @@ class UserTest extends TestCase
         $user->setRoles($roles);
         $user->setSubcriptionEndAt($subcriptionEndAt);
         $user->setCreatedAt($createdAt);
+        $user->setUpdateAt($updateAt);
 
         $user->setSubcriptionId($subcriptionId);
+        $user->addPdf($pdfs);
 
         // Vérification des getters
         $this->assertEquals($email, $user->getEmail());
@@ -43,8 +48,10 @@ class UserTest extends TestCase
         $this->assertEquals($roles, $user->getRoles());
         $this->assertEquals($subcriptionEndAt, $user->getSubcriptionEndAt());
         $this->assertEquals($createdAt, $user->getCreatedAt());
+        $this->assertEquals($updateAt, $user->getUpdateAt());
 
         $this->assertEquals($subcriptionId, $user->getSubcriptionId());
+        $this->assertEquals($pdfs, $user->getPdfs()[0]);
 
     }
 }
