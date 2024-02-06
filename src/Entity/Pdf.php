@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\PdfRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\HasLifecycleCallbacks] // This annotation is used to call the setCreatedAt() method before the entity is persisted and updated.
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PdfRepository::class)]
 #[ORM\Table(name: '`pdf`')]
 class Pdf
