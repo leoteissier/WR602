@@ -42,13 +42,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $subcription_end_at = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $update_at = null;
+    private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $subcription_id = null;
+    private ?Subscription $subcriptionId = null;
 
     #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'user_id')]
     private Collection $pdfs;
@@ -166,38 +166,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdateAt(): ?\DateTimeInterface
     {
-        return $this->update_at;
+        return $this->updateAt;
     }
 
     #[ORM\PreUpdate] // This annotation is used to call the setUpdatedAt() method before the entity is updated.
-    public function setUpdateAt(?\DateTimeInterface $update_at): static
+    public function setUpdateAt(?\DateTimeInterface $updateAt): static
     {
-        $this->update_at = $update_at;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
 
     public function getSubcriptionId(): ?Subscription
     {
-        return $this->subcription_id;
+        return $this->subcriptionId;
     }
 
-    public function setSubcriptionId(?Subscription $subcription_id): static
+    public function setSubcriptionId(?Subscription $subcriptionId): static
     {
-        $this->subcription_id = $subcription_id;
+        $this->subcriptionId = $subcriptionId;
 
         return $this;
     }
