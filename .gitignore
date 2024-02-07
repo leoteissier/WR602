@@ -52,8 +52,8 @@
 /.web-server-pid
 
 # env file
-/.env
 /.env.local
+
 ###> squizlabs/php_codesniffer ###
 /.phpcs-cache
 /phpcs.xml
