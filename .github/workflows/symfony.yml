@@ -46,9 +46,6 @@ jobs:
           DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
         run: vendor/bin/phpunit
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit tests/
-
       - name: Run PHP_CodeSniffer
         run: vendor/bin/phpcs --standard=PSR1 src/
 
