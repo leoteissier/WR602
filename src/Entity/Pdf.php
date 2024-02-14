@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\PdfRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PdfRepository::class)]
 #[ORM\Table(name: '`pdf`')]
+#[ORM\HasLifecycleCallbacks]
 class Pdf
 {
     #[ORM\Id]
@@ -15,7 +16,10 @@ class Pdf
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'pdfs')]
@@ -26,15 +30,27 @@ class Pdf
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
     #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
