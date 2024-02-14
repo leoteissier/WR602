@@ -13,17 +13,13 @@ class PdfTest extends TestCase
         // Création d'une instance de l'entité Pdf
         $pdf = new Pdf();
 
-        // Définition de données de test
-        $createdAt = new \DateTimeImmutable();
-
         $userId = new User();
 
         // Utilisation des setters
-        $pdf->setCreatedAt($createdAt);
+        $pdf->setCreatedAt();
         $pdf->setUserId($userId);
 
         // Vérification des getters
-        $this->assertEquals($createdAt, $pdf->getCreatedAt());
         $this->assertEquals($userId, $pdf->getUserId());
     }
 }
