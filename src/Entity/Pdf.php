@@ -15,6 +15,8 @@ class Pdf
     #[ORM\Column]
     private ?int $id = null;
 
+    private ?string $filename = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -24,6 +26,18 @@ class Pdf
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): static
+    {
+        $this->filename = $filename;
+
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable

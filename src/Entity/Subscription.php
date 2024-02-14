@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table(name: '`subscription`')]
@@ -17,10 +18,11 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -118,7 +120,7 @@ class Subscription
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setSubcriptionId($this);
+            $user->setSubscriptionId($this);
         }
 
         return $this;
@@ -128,8 +130,8 @@ class Subscription
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getSubcriptionId() === $this) {
-                $user->setSubcriptionId(null);
+            if ($user->getSubscriptionId() === $this) {
+                $user->setSubscriptionId(null);
             }
         }
 

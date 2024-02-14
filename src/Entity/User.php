@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,6 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Email]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -32,30 +37,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+    #[Assert\Length(
+        min: 8,
+        max: 32,
+        minMessage: 'Your password must be at least {{ limit }} characters long',
+        maxMessage: 'Your password cannot be longer than {{ limit }} characters',
+    )]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+        message: 'Your password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
+    )]
+    #[Assert\Type('string')]
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 64,
+        minMessage: 'Your username must be at least {{ limit }} characters long',
+        maxMessage: 'Your username cannot be longer than {{ limit }} characters',
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9_]+$/',
+        message: 'Your username must be alphanumeric',
+    )]
+    #[Assert\Type('string')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 64,
+        minMessage: 'Your username must be at least {{ limit }} characters long',
+        maxMessage: 'Your username cannot be longer than {{ limit }} characters',
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9_]+$/',
+        message: 'Your username must be alphanumeric',
+    )]
+    #[Assert\Type('string')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $subcriptionEndAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updateAt = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $subcriptionId = null;
+    private ?Subscription $subscriptionId = null;
 
     /** @var Collection<int, Pdf> */
     #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'userId')]
     private Collection $pdfs;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -177,34 +218,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     #[ORM\PreUpdate] // This annotation is used to call the setUpdatedAt() method before the entity is updated.
-    public function setUpdateAt(?\DateTimeInterface $updateAt): static
+    public function setUpdatedAt(): static
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }
 
-    public function getSubcriptionId(): ?Subscription
+    public function getSubscriptionId(): ?Subscription
     {
-        return $this->subcriptionId;
+        return $this->subscriptionId;
     }
 
-    public function setSubcriptionId(?Subscription $subcriptionId): static
+    public function setSubscriptionId(?Subscription $subscriptionId): static
     {
-        $this->subcriptionId = $subcriptionId;
+        $this->subscriptionId = $subscriptionId;
 
         return $this;
     }
@@ -235,6 +276,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $pdf->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

@@ -66,7 +66,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 5; $i++) {
             $pdf = new Pdf();
             $pdf->setUserId($user)
-                ->setName('PDF ' . $i);
+                ->setFilename('PDF ' . $i);
             $manager->persist($pdf);
         }
 
