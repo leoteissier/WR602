@@ -51,11 +51,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $subcriptionId = null;
+    private ?Subscription $subscriptionId = null;
 
     /** @var Collection<int, Pdf> */
     #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'userId')]
     private Collection $pdfs;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -177,34 +180,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #[ORM\PrePersist] // This annotation is used to call the setCreatedAt() method before the entity is persisted.
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTime
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     #[ORM\PreUpdate] // This annotation is used to call the setUpdatedAt() method before the entity is updated.
-    public function setUpdateAt(?\DateTimeInterface $updateAt): static
+    public function setUpdatedAt(): static
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getSubcriptionId(): ?Subscription
+    public function getSubscriptionId(): ?Subscription
     {
-        return $this->subcriptionId;
+        return $this->subscriptionId;
     }
 
-    public function setSubcriptionId(?Subscription $subcriptionId): static
+    public function setSubscriptionId(?Subscription $subscriptionId): static
     {
-        $this->subcriptionId = $subcriptionId;
+        $this->subscriptionId = $subscriptionId;
 
         return $this;
     }
@@ -235,6 +238,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $pdf->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
