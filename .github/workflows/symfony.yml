@@ -39,12 +39,6 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: list directories
         run: ls
-      - name: Create directory
-        run: mkdir public/pdf
-      - name: CHMOD directory
-        run: chmod 777 public/pdf
-      - name: list public directory
-        run: ls -lisa public/
       - name: Create Database
         run: |
           mkdir -p data
