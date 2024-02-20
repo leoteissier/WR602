@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Invoice Confirmation{% endblock %}
+{% block title %}Confirmation de Facture{% endblock %}
 
 {% block body %}
     <div class="container">
         <form method="POST" action="{{ path('app_subscription_payment_details') }}">
-            <h1>Invoice Confirmation</h1>
-            <p>Subscription: {{ subscription.name }}</p>
-            <p>Price: {{ subscription.price }}</p>
+            <h1>Confirmation de Facture</h1>
+            <p>Abonnement : {{ subscription.name }}</p>
+            <p>Prix : {{ subscription.price }} €</p>
             <p>Date de fin : {{ subscription.endDate }}</p>
-            <button type="submit" class="btn btn-primary">Confirm and Proceed to Payment</button>
+            <button type="submit" class="btn btn-primary">Confirmer et Procéder au Paiement</button>
         </form>
     </div>
 {% endblock %}

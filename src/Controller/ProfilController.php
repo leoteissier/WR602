@@ -25,7 +25,7 @@ class ProfilController extends AbstractController
             'email' => '',
         ];
 
-        $subscription = $user->getSubscriptionId();
+        $subscription = $user->getSubscription();
         $subscriptionName = $subscription ? $subscription->getName() : 'Aucun';
 
         if ($request->isMethod('POST')) {

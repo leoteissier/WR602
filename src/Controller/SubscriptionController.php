@@ -96,7 +96,7 @@ class SubscriptionController extends AbstractController
             if ($newSubscriptionId) {
                 $newSubscription = $this->entityManager->getRepository(Subscription::class)->find($newSubscriptionId);
                 if ($newSubscription) {
-                    $user->setSubscriptionId($newSubscription); // Assurez-vous que cette méthode existe et est correcte
+                    $user->setSubscription($newSubscription); // Assurez-vous que cette méthode existe et est correcte
                     $duration = $newSubscription->getPrice() == 10 ? '+1 month' : '+1 year';
                     $user->setSubscriptionEndAt(new \DateTime($duration));
 
@@ -128,7 +128,7 @@ class SubscriptionController extends AbstractController
     {
         $user = $this->security->getUser();
         $subscriptionId = $this->entityManager->getRepository(Subscription::class)->findBy(['name' => 'Abonnement Gratuit']);
-        $user->setSubscriptionId($subscriptionId[0]);
+        $user->setSubscription($subscriptionId[0]);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $this->redirectToRoute('app_subscription');

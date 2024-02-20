@@ -3,7 +3,9 @@
 namespace App\Tests\Service;
 
 use App\Service\PdfService;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -11,41 +13,25 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class PdfServiceTest extends TestCase
 {
     private PdfService $pdfService;
-    private string $pdfDirectory;
 
-    protected function setUp(): void
+    public string $pdfDirectory;
+
+    public function setUp(): void
     {
-        $clientMock = $this->createMock(HttpClientInterface::class);
-        $validatorMock = $this->createMock(ValidatorInterface::class);
-
-        // Create a mock user or whatever your application uses for authentication
-        $userMock = $this->createMock(\App\Entity\User::class);
-
-        // Mock the EntityManagerInterface
-        $entityManagerMock = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
-
-        // Mock the Security component to return a user when getUser() is called
-        $securityMock = $this->createMock(\Symfony\Bundle\SecurityBundle\Security::class);
-        $securityMock->method('getUser')->willReturn($userMock); // Simulate a logged-in user
-
-        $this->pdfService = new PdfService(
-            $clientMock,
-            $validatorMock,
-            'http://gotenberg',
-            $this->pdfDirectory = __DIR__ . '/../../public/pdf',
-            $entityManagerMock,
-            $securityMock
-        );
-
-        // Mock the validator to return a ConstraintViolationList (empty for valid cases)
-        $validatorMock->method('validate')->willReturn(new ConstraintViolationList());
+        $this->pdfDirectory = __DIR__ . '/../../public/pdf';
+        $this->pdfService = new PdfService($this->createMock(HttpClientInterface::class),
+        $this->createMock(ValidatorInterface::class),
+        'http://gotenberg',
+        $this->pdfDirectory,
+        $this->createMock(EntityManagerInterface::class),
+        $this->createMock(Security::class));
     }
 
     public function testGeneratePdfCreatesFile()
     {
         $data = [
             'url' => 'https://leoteissier.fr/',
-            'pdfName' => 'mon_portfolio' // Ce nom est pour l'entité et non pour le fichier physique.
+            'pdfName' => 'mon_portfolio'
         ];
 
         dump($this->pdfService);

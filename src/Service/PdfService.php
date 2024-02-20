@@ -112,7 +112,7 @@ class PdfService
         $pdf = new Pdf();
         $pdf->setFilename($pdfFileName);
         $pdf->setName($data['pdfName']);
-        $pdf->setUserId($user);
+        $pdf->setUser($user);
         $this->entityManager->persist($pdf);
         $this->entityManager->flush();
 
@@ -137,7 +137,7 @@ class PdfService
     {
         $user = $this->security->getUser();
 
-        $subscription = $user->getSubscriptionId();
+        $subscription = $user->getSubscription();
         if (!$subscription) {
             throw new \LogicException('User does not have a subscription.');
         }

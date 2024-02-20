@@ -55,7 +55,7 @@ class AppFixtures extends Fixture
         $user->setEmail('')
             ->setPassword(password_hash('', PASSWORD_BCRYPT))
             ->setRoles(['ROLE_USER'])
-            ->setSubscriptionId($subscriptionEntities['Abonnement Gratuit'])
+            ->setSubscription($subscriptionEntities['Abonnement Gratuit'])
             ->setIsVerified(true);
         $manager->persist($user);
 

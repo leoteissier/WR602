@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
             }
 
             // Associer la Subscription à l'utilisateur
-            $user->setSubscriptionId($subscription);
+            $user->setSubscription($subscription);
 
             $entityManager->persist($user);
             $entityManager->flush();

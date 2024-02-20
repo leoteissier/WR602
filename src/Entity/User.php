@@ -51,7 +51,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $subscriptionId = null;
+    private ?Subscription $subscription = null;
 
     /** @var Collection<int, Pdf> */
     #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'userId')]
@@ -200,14 +200,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    public function getSubscriptionId(): ?Subscription
+    public function getSubscription(): ?Subscription
     {
-        return $this->subscriptionId;
+        return $this->subscription;
     }
 
-    public function setSubscriptionId(?Subscription $subscriptionId): static
+    public function setSubscription(?Subscription $subscription): static
     {
-        $this->subscriptionId = $subscriptionId;
+        $this->subscription = $subscription;
 
         return $this;
     }
@@ -224,7 +224,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         if (!$this->pdfs->contains($pdf)) {
             $this->pdfs->add($pdf);
-            $pdf->setUserId($this);
+            $pdf->setUser($this);
         }
 
         return $this;
@@ -234,8 +234,8 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         if ($this->pdfs->removeElement($pdf)) {
             // set the owning side to null (unless already changed)
-            if ($pdf->getUserId() === $this) {
-                $pdf->setUserId(null);
+            if ($pdf->getUser() === $this) {
+                $pdf->setUser(null);
             }
         }
 

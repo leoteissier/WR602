@@ -34,8 +34,8 @@ class PdfHistoryController extends AbstractController
         $isPremium = false;
 
         // Vérifiez si l'utilisateur a un objet Subscription associé et, si oui, accédez à son ID
-        if ($user && $user->getSubscriptionId() != null) {
-            $subscriptionId = $user->getSubscriptionId()->getId(); // Accédez à l'ID de l'abonnement
+        if ($user && $user->getSubscription() != null) {
+            $subscriptionId = $user->getSubscription()->getId(); // Accédez à l'ID de l'abonnement
 
             // Vérifiez si l'ID de l'abonnement correspond à un abonnement payant
             $isPremium = in_array($subscriptionId, [2, 3]);
@@ -43,7 +43,7 @@ class PdfHistoryController extends AbstractController
 
         $pdfRepository = $this->entityManager->getRepository(Pdf::class);
 
-        $pdfs = $pdfRepository->findBy(['userId' => $this->security->getUser()]);
+        $pdfs = $pdfRepository->findBy(['user' => $this->security->getUser()]);
 
         return $this->render('pdf_history/index.html.twig', [
             'pdfs' => $pdfs,
@@ -143,6 +143,6 @@ class PdfHistoryController extends AbstractController
 
     private function isPdfOwnedByCurrentUser(Pdf $pdf): bool
     {
-        return $pdf->getUserId() === $this->security->getUser();
+        return $pdf->getUser() === $this->security->getUser();
     }
 }

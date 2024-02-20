@@ -40,7 +40,7 @@
 
         <div class="link-section">
             <a href="{{ path('app_password_edit') }}">Modifier mon mot de passe</a>
-            {% if user.getSubscriptionId() is null or user.getSubscriptionId().getId() == 1 %}
+            {% if user.getSubscription() is null or user.getSubscription().getId() == 1 %}
                 <a href="{{ path('app_subscription') }}">Souscrire à un abonnement</a>
             {% else %}
                 <a href="{{ path('app_unsubscribe') }}" onclick="return confirm('Êtes-vous sûr de vouloir vous désabonner ?')">Se désabonner</a>
