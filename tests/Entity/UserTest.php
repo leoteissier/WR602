@@ -37,7 +37,7 @@ class UserTest extends TestCase
         $user->setCreatedAt();
         $user->setUpdatedAt();
 
-        $user->setSubscriptionId($subcriptionId);
+        $user->setSubscription($subcriptionId);
         $user->addPdf($pdfs);
 
         // Vérification des getters
@@ -48,7 +48,7 @@ class UserTest extends TestCase
         $this->assertEquals($roles, $user->getRoles());
         $this->assertEquals($subcriptionEndAt, $user->getSubscriptionEndAt());
 
-        $this->assertEquals($subcriptionId, $user->getSubscriptionId());
+        $this->assertEquals($subcriptionId, $user->getSubscription());
         $this->assertEquals($pdfs, $user->getPdfs()[0]);
 
     }
