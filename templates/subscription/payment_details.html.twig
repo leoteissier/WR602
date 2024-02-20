@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Enter Payment Details{% endblock %}
+{% block title %}Saisir les Détails de Paiement{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -50,7 +50,7 @@
 
 {% block body %}
     <div class="container">
-        <h1>Enter Payment Details</h1>
+        <h1>Saisir les Détails de Paiement</h1>
         {% for message in app.flashes('error') %}
             <div class="alert alert-danger">{{ message }}</div>
         {% endfor %}
@@ -67,7 +67,7 @@
             {{ form_label(form.cvv) }}
             {{ form_widget(form.cvv) }}
         </div>
-        <button type="submit" class="btn btn-primary">Pay</button>
+        <button type="submit" class="btn btn-primary">Payer</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

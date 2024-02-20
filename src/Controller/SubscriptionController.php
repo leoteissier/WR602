@@ -41,13 +41,10 @@ class SubscriptionController extends AbstractController
         if ($newSubscriptionId) {
             $newSubscription = $this->entityManager->getRepository(Subscription::class)->find($newSubscriptionId);
             if (!$newSubscription) {
-                $this->addFlash('error', 'L\'abonnement demandé n\'existe pas.');
                 return $this->redirectToRoute('app_subscription');
             }
-
             return $this->redirectToRoute('app_subscription_invoice', ['id' => $newSubscriptionId]);
         } else {
-            $this->addFlash('error', 'Aucun abonnement sélectionné.');
             return $this->redirectToRoute('app_subscription');
         }
     }
