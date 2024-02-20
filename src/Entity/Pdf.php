@@ -19,6 +19,9 @@ class Pdf
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $filename = null;
 
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $name = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -38,6 +41,18 @@ class Pdf
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

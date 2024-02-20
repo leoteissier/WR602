@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post" action="{{ path('app_profil') }}">
+            <h2 class="h3 mb-3 font-weight-normal">Informations personnelles</h2>
+            {% for message in app.flashes('success') %}
+                <div class="alert-success">{{ message }}</div>
+            {% endfor %}
+            <div>
+                <label for="firstname">Prénom</label>
+                <input type="text" id="firstname" name="firstname" value="{{ user.firstname }}" class="form-control">
+                {% if errors.firstname %}
+                    <div class="alert alert-danger">{{ errors.firstname }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="lastname">Nom</label>
+                <input type="text" id="lastname" name="lastname" value="{{ user.lastname }}" class="form-control">
+                {% if errors.lastname %}
+                    <div class="alert alert-danger">{{ errors.lastname }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" value="{{ user.email }}" class="form-control">
+                {% if errors.email %}
+                    <div class="alert alert-danger">{{ errors.email }}</div>
+                {% endif %}
+            </div>
+            <div class="form-control">
+                <label for="subscription">
+                    Type d'abonnement : <span style="color: #007bff">{{ subscriptionName }}</span>
+                </label>
+            </div>
+            <button type="submit" class="btn">Enregistrer</button>
+        </form>
+
+        <div class="link-section">
+            <a href="{{ path('app_password_edit') }}">Modifier mon mot de passe</a>
+            {% if user.getSubscriptionId() is null or user.getSubscriptionId().getId() == 1 %}
+                <a href="{{ path('app_subscription') }}">Souscrire à un abonnement</a>
+            {% else %}
+                <a href="{{ path('app_unsubscribe') }}" onclick="return confirm('Êtes-vous sûr de vouloir vous désabonner ?')">Se désabonner</a>
+            {% endif %}
+            <a href="{{ path('app_pdf_history') }}">Mon historique de génération de PDF</a>
+        </div>
+    </div>
+
+{% endblock %}

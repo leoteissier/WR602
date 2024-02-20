@@ -18,7 +18,7 @@ class Subscription
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -46,14 +46,14 @@ class Subscription
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): static
+    public function setName(string $name): static
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -118,7 +118,7 @@ class Subscription
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setSubcriptionId($this);
+            $user->setSubscriptionId($this);
         }
 
         return $this;
@@ -128,8 +128,8 @@ class Subscription
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getSubcriptionId() === $this) {
-                $user->setSubcriptionId(null);
+            if ($user->getSubscriptionId() === $this) {
+                $user->setSubscriptionId(null);
             }
         }
 

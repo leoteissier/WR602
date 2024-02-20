@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation d'abonnement{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div>
+            <h1>Félicitations !</h1>
+            <p>Votre abonnement a été mis à jour avec succès.</p>
+            <hr>
+            <p>Merci de nous faire confiance. Vous pouvez désormais profiter de tous les avantages de votre abonnement.</p>
+            <p>
+                <a class="" href="{{ path('app_pdf_generate') }}" role="button">Utiliser votre abonnement</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

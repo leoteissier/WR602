@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Convertir HTML en PDF{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post" action="{{ path('app_pdf_download') }}" enctype="multipart/form-data" class="form-container">
+            {{ form_widget(form._token) }} {# Pour la protection CSRF #}
+
+            {# Condition pour afficher le nombre de PDFs restants seulement si ce n'est pas illimité #}
+            {% if pdfsRemaining != constant('PHP_INT_MAX') %}
+                <div class="form-group">
+                    <p>Vous pouvez encore générer {{ pdfsRemaining }} PDF(s) ce mois-ci.</p>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.url.vars.id }}">Url :</label>
+                {{ form_widget(form.url, {'attr': {'id': form.url.vars.id, 'class': 'form-control'}}) }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.pdfName.vars.id }}">Nom du PDF :</label>
+                {{ form_widget(form.pdfName, {'attr': {'id': form.pdfName.vars.id, 'class': 'form-control'}}) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Convertir en PDF</button>
+        </form>
+    </div>
+{% endblock %}

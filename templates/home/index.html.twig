@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block body %}
+    <style>
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        section div {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Styles des listes */
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin: 5px 0;
+        }
+
+    </style>
+
+    <div class="container">
+        <h1>Bienvenue sur notre service de génération de PDF</h1>
+
+        <!-- Section des abonnements -->
+        <section>
+            <h2>Nos Offres d'Abonnement</h2>
+
+            <!-- Abonnement Gratuit -->
+            <div>
+                <h3>Abonnement Gratuit - 0€/mois</h3>
+                <p>Idéal pour découvrir notre service, l'abonnement Gratuit vous permet de générer jusqu'à <strong>10 PDF par mois</strong> sans frais. Parfait pour les utilisateurs souhaitant tester nos fonctionnalités de base.</p>
+                <ul>
+                    <li>Accès à quelques modèles de PDF.</li>
+                    <li>Capacité de génération limitée.</li>
+                    <li>Support technique via email.</li>
+                </ul>
+            </div>
+
+            <!-- Abonnement Standard -->
+            <div>
+                <h3>Abonnement Standard - 5€/mois</h3>
+                <p>Parfait pour les utilisateurs individuels ou les petites équipes, l'abonnement Standard vous permet de générer jusqu'à <strong>50 PDF par mois</strong>. Idéal pour :
+                <ul>
+                    <li>Générer des rapports mensuels.</li>
+                    <li>Créer des documents personnalisés.</li>
+                    <li>Accéder à des modèles de base pour vos PDF.</li>
+                </ul>
+                <p>Commencez à simplifier votre flux de travail de documentation dès aujourd'hui avec notre plan Standard.</p>
+            </div>
+
+            <!-- Abonnement Premium -->
+            <div>
+                <h3>Abonnement Premium - 10€/mois</h3>
+                <p>Conçu pour les professionnels et les entreprises ayant des besoins plus importants, l'abonnement Premium vous offre la possibilité de générer jusqu'à <strong>200 PDF par mois</strong>, avec des fonctionnalités avancées telles que :
+                <ul>
+                    <li>Accès illimité à tous les modèles de PDF premium.</li>
+                    <li>Options de personnalisation avancées.</li>
+                    <li>Priorité sur le support technique.</li>
+                </ul>
+                <p>Optimisez votre production de documents et gagnez en efficacité avec notre offre Premium.</p>
+            </div>
+        </section>
+    </div>
+{% endblock %}

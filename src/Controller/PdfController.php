@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
+use App\Form\PdfFormType;
 use App\Service\PdfService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -33,30 +32,16 @@ class PdfController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        // Créez un formulaire pour collecter l'URL ou le fichier HTML
-        $form = $this->createFormBuilder()
-            ->add('url', TextType::class, [
-                'required' => false,
-                'label' => 'Enter a URL:',
-                'constraints' => [
-                    new Regex([
-                        'pattern' => '/\b(?:https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i',
-                        'message' => 'Please enter a valid URL.',
-                    ]),
-                ],
-            ])
-            ->add('htmlFile', FileType::class, [
-                'required' => false,
-                'label' => 'Or upload an HTML file:'
-            ])
-            ->getForm();
-
-        // Traitez le formulaire
+        
+        $form = $this->createForm(PdfFormType::class);
         $form->handleRequest($request);
 
-        // Affichez le formulaire
+        // Récupérer le nombre de PDFs restants
+        $pdfsRemaining = $this->pdfGeneratorService->getPdfLimitRemaining();
+
         return $this->render('pdf/index.html.twig', [
             'form' => $form->createView(),
+            'pdfsRemaining' => $pdfsRemaining,
         ]);
     }
 
@@ -66,18 +51,32 @@ class PdfController extends AbstractController
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function download(Request $request): BinaryFileResponse
+    public function download(Request $request): Response
     {
-        // Récupérez les données du formulaire
-        $formData = $request->request->all();
-        $pdfFileName = $this->pdfGeneratorService->generatePdf($formData);
-        $pdfFilePath = $this->pdfDirectory . '/' . $pdfFileName;
+        $form = $this->createForm(PdfFormType::class);
+        $form->handleRequest($request);
 
-        if (!file_exists($pdfFilePath)) {
-            throw $this->createNotFoundException('Le fichier n\'existe pas.');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData(); // Utilisez getData() pour obtenir les données nettoyées
+
+            // Vérifier s'il reste des PDFs à générer
+            if ($this->pdfGeneratorService->getPdfLimitRemaining() <= 0) {
+                // Rediriger vers une page pour augmenter l'abonnement
+                return $this->redirectToRoute('app_subscription_change');
+            }
+
+            // Logique de génération du PDF
+            $fileName = $this->pdfGeneratorService->generatePdf($formData);
+            if (!$fileName) {
+                throw $this->createNotFoundException('Le fichier PDF n\'a pas pu être généré.');
+            }
+
+            $filePath = $this->pdfDirectory . '/' . $fileName;
+            return new BinaryFileResponse($filePath);
         }
 
-        // Créer une afficher le fichier PDF
-        return new BinaryFileResponse($pdfFilePath);
+        // Si le formulaire n'est pas soumis ou n'est pas valide, redirigez vers la page du formulaire ou gérez l'erreur différemment
+        return $this->redirectToRoute('app_pdf_generate');
     }
+
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,13 +42,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $firstname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $subcriptionEndAt = null;
+    private ?\DateTimeInterface $subscriptionEndAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updateAt = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $subscriptionId = null;
@@ -162,14 +162,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSubcriptionEndAt(): ?\DateTimeInterface
+    public function getSubscriptionEndAt(): ?\DateTimeInterface
     {
-        return $this->subcriptionEndAt;
+        return $this->subscriptionEndAt;
     }
 
-    public function setSubcriptionEndAt(?\DateTimeInterface $subcriptionEndAt): static
+    public function setSubscriptionEndAt(?\DateTimeInterface $subscriptionEndAt): static
     {
-        $this->subcriptionEndAt = $subcriptionEndAt;
+        $this->subscriptionEndAt = $subscriptionEndAt;
 
         return $this;
     }
@@ -187,7 +187,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -195,7 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PreUpdate] // This annotation is used to call the setUpdatedAt() method before the entity is updated.
     public function setUpdatedAt(): static
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime;
 
         return $this;
     }

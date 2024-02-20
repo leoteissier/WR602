@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique de mes PDF{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Historique de mes PDF</h1>
+        {% if pdfs %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom du fichier</th>
+                    <th>Date de création</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pdf in pdfs %}
+                    <tr data-href="{{ path('app_pdf_history_show', {'id': pdf.id}) }}" style="cursor: pointer;">
+                        <td>{{ pdf.name }}.pdf</td>
+                        <td>{{ pdf.createdAt|date('d/m/Y') }}</td>
+                        <td class="action">
+                            <a href="{{ path('app_pdf_history_download', {id: pdf.id}) }}">Télécharger</a>
+                            {% if isPremium %}
+                                <!-- Affichez le lien de suppression uniquement pour les utilisateurs premium -->
+                                <a href="{{ path('app_pdf_history_delete', {'id': pdf.id}) }}" onclick="event.stopPropagation();">Supprimer</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucun PDF n'a été créé pour le moment.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('tr[data-href]').forEach(row => {
+                row.addEventListener('click', function() {
+                    window.location.href = this.dataset.href;
+                });
+            });
+        });
+    </script>
+{% endblock %}

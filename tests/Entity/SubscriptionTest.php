@@ -21,14 +21,14 @@ class SubscriptionTest extends TestCase
         $media = 'Test.jpg';
 
         // Utilisation des setters
-        $subscription->setTitle($title);
+        $subscription->setName($title);
         $subscription->setDescription($description);
         $subscription->setPdfLimit($pdfLimit);
         $subscription->setPrice($price);
         $subscription->setMedia($media);
 
         // Vérification des getters
-        $this->assertEquals($title, $subscription->getTitle());
+        $this->assertEquals($title, $subscription->getName());
         $this->assertEquals($description, $subscription->getDescription());
         $this->assertEquals($pdfLimit, $subscription->getPdfLimit());
         $this->assertEquals($price, $subscription->getPrice());
