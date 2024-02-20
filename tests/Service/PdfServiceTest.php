@@ -7,12 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class PdfServiceTest extends TestCase
 {
     private PdfService $pdfService;
-    private string $pdfDirectory = '/public/pdf';
+    private $pdfDirectory;
 
     protected function setUp(): void
     {
@@ -25,14 +24,15 @@ class PdfServiceTest extends TestCase
         // Mock the EntityManagerInterface
         $entityManagerMock = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
 
-        // Mock the Security component if required by PdfService
+        // Mock the Security component to return a user when getUser() is called
         $securityMock = $this->createMock(\Symfony\Bundle\SecurityBundle\Security::class);
+        $securityMock->method('getUser')->willReturn($userMock); // Simulate a logged-in user
 
         $this->pdfService = new PdfService(
             $clientMock,
             $validatorMock,
             'http://gotenberg',
-            $this->pdfDirectory,
+            $this->pdfDirectory = '/public/pdf',
             $entityManagerMock,
             $securityMock
         );
@@ -41,20 +41,35 @@ class PdfServiceTest extends TestCase
         $validatorMock->method('validate')->willReturn(new ConstraintViolationList());
     }
 
-
-    public function testUploadPdf()
+    public function testGeneratePdfCreatesFile()
     {
         $data = [
-            'url' => 'http://test.com',
-            'pdfName' => 'test.pdf'
+            'url' => 'https://leoteissier.fr/',
+            'pdfName' => 'mon_portfolio' // Ce nom est pour l'entité et non pour le fichier physique.
         ];
-        $responseMock = $this->createMock(ResponseInterface::class);
-        $responseMock->method('getStatusCode')->willReturn(200);
-        $responseMock->method('getContent')->willReturn('test.pdf');
-        $clientMock = $this->createMock(HttpClientInterface::class);
-        $clientMock->method('request')->willReturn($responseMock);
-        $this->pdfService->generatePdf($data);
-        $this->assertFileExists('public/pdf/test.pdf');
-    }
 
+        // Obtenir le chemin du répertoire où les PDF sont sauvegardés
+        $pdfDirectory = $this->pdfDirectory;
+        dump($pdfDirectory);
+        $initialFiles = scandir($pdfDirectory);
+        dump($initialFiles);
+
+        // Exécuter la fonctionnalité de génération de PDF
+        $generatedPdfFileName = $this->pdfService->generatePdf($data);
+
+        $finalFiles = scandir($pdfDirectory);
+        $newFiles = array_diff($finalFiles, $initialFiles);
+
+        // Vérifier qu'un nouveau fichier a été créé
+        $this->assertCount(1, $newFiles, "Un nouveau fichier PDF devrait être créé.");
+
+        // Construire le chemin complet du fichier PDF généré
+        $generatedPdfFilePath =  '/public/pdf/' . $generatedPdfFileName;
+
+        // Vérifier que le fichier généré existe
+        $this->assertFileExists($generatedPdfFilePath);
+
+        // Supprimer le fichier généré
+        unlink($generatedPdfFilePath);
+    }
 }
