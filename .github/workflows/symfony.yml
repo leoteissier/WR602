@@ -37,6 +37,10 @@ jobs:
             ${{ runner.os }}-php-
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Create directory
+        run: mkdir public/pdf
+      - name: CHMOD directory
+        run: chmod 777 public/pdf
       - name: Create Database
         run: |
           mkdir -p data
