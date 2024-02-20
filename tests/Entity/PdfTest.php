@@ -16,10 +16,14 @@ class PdfTest extends TestCase
         $userId = new User();
 
         // Utilisation des setters
+        $pdf->setFilename('Test.pdf');
+        $pdf->setName('Test');
         $pdf->setCreatedAt();
         $pdf->setUserId($userId);
 
         // Vérification des getters
+        $this->assertEquals('Test.pdf', $pdf->getFilename());
+        $this->assertEquals('Test', $pdf->getName());
         $this->assertEquals($userId, $pdf->getUserId());
     }
 }

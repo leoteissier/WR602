@@ -33,7 +33,7 @@ class UserTest extends TestCase
         $user->setLastname($lastname);
         $user->setPassword($password);
         $user->setRoles($roles);
-        $user->setSubcriptionEndAt($subcriptionEndAt);
+        $user->setSubscriptionEndAt($subcriptionEndAt);
         $user->setCreatedAt();
         $user->setUpdatedAt();
 
@@ -46,7 +46,7 @@ class UserTest extends TestCase
         $this->assertEquals($lastname, $user->getLastname());
         $this->assertEquals($password, $user->getPassword());
         $this->assertEquals($roles, $user->getRoles());
-        $this->assertEquals($subcriptionEndAt, $user->getSubcriptionEndAt());
+        $this->assertEquals($subcriptionEndAt, $user->getSubscriptionEndAt());
 
         $this->assertEquals($subcriptionId, $user->getSubscriptionId());
         $this->assertEquals($pdfs, $user->getPdfs()[0]);
