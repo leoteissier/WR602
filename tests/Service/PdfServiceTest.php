@@ -67,12 +67,12 @@ class PdfServiceTest extends TestCase
         $this->assertCount(1, $newFiles, "Un nouveau fichier PDF devrait être créé.");
 
         // Construire le chemin complet du fichier PDF généré
-        $generatedPdfFilePath =  '/public/pdf/' . $generatedPdfFileName;
+        $generatedPdfFilePath = $this->pdfDirectory . '/' . $generatedPdfFileName;
 
         // Vérifier que le fichier généré existe
         $this->assertFileExists($generatedPdfFilePath);
 
-        // Supprimer le fichier généré
+        // Supprimer le fichier généré après le test
         unlink($generatedPdfFilePath);
     }
 }
