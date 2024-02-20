@@ -41,8 +41,12 @@ jobs:
         run: ls
       - name: Create directory
         run: mkdir public/pdf
+      - name: Create directory
+        run: mkdir /public
+      - name: Create directory
+        run: mkdir /public/pdf
       - name: CHMOD directory
-        run: chmod 777 public/pdf
+        run: chmod 777 /public/pdf
       - name: list public directory
         run: ls -lisa public/
       - name: Create Database
