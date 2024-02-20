@@ -3,3 +3,86 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: [GET, POST]
+
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+app_verify_email:
+    path: /verify/email
+    controller: App\Controller\RegistrationController::verifyUserEmail
+
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index
+
+app_pdf_generate:
+    path: /pdf/generate
+    controller: App\Controller\PdfController::index
+
+app_pdf_download:
+    path: /pdf/download
+    controller: App\Controller\PdfController::download
+
+app_profil:
+    path: /profil
+    controller: App\Controller\ProfilController::index
+    methods: [GET, POST]
+
+app_password_edit:
+    path: /password/edit
+    controller: App\Controller\ProfilController::passwordEdit
+    methods: [GET, POST]
+
+app_password_edit_confirmation:
+    path: /password/edit/confirmation
+    controller: App\Controller\ProfilController::passwordEditConfirmation
+
+app_subscription:
+    path: /subscription
+    controller: App\Controller\SubscriptionController::index
+
+app_subscription_change:
+    path: /subscription/change
+    controller: App\Controller\SubscriptionController::change
+
+app_subscription_invoice:
+    path: /subscription/invoice/{id}
+    controller: App\Controller\SubscriptionController::invoice
+
+app_subscription_payment_details:
+    path: /subscription/payment/details
+    controller: App\Controller\SubscriptionController::paymentDetails
+
+app_subscription_payment_confirmation:
+    path: /subscription/payment/confirmation
+    controller: App\Controller\SubscriptionController::paymentConfirmation
+
+app_unsubscribe:
+    path: /unsubscribe
+    controller: App\Controller\SubscriptionController::unsubscribe
+
+app_pdf_history:
+    path: /pdf/history
+    controller: App\Controller\PdfHistoryController::index
+
+app_pdf_history_show:
+    path: /pdf/history/show/{id}
+    controller: App\Controller\PdfHistoryController::show
+
+app_pdf_history_download:
+    path: /pdf/history/download/{id}
+    controller: App\Controller\PdfHistoryController::download
+
+app_pdf_history_delete:
+    path: /pdf/history/delete/{id}
+    controller: App\Controller\PdfHistoryController::delete

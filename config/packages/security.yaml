@@ -21,12 +21,17 @@ security:
             form_login:
                 login_path: app_login # La route vers laquelle rediriger pour la connexion
                 check_path: app_login # La route qui valide les informations de connexion
-                default_target_path: / # La route vers laquelle rediriger après la connexion réussie
+                default_target_path: /login # La route vers laquelle rediriger après la connexion réussie
                 enable_csrf: true
             logout:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800  # 1 semaine en secondes
+                path: /
+                domain: ~
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -37,16 +42,22 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/, roles: PUBLIC_ACCESS }
-        - { path: ^/login, roles: PUBLIC_ACCESS },
-        - { path: ^/register, roles: PUBLIC_ACCESS }
-        - { path: ^/verify/email, roles: PUBLIC_ACCESS }
         - { path: ^/pdf/generate, roles: ROLE_USER }
         - { path: ^/pdf/download, roles: ROLE_USER }
-        - { path: ^/history, roles: ROLE_USER }
+        - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/profil/edit, roles: ROLE_USER }
+        - { path: ^/password/edit, roles: ROLE_USER }
+        - { path: ^/password/edit/confirmation, roles: ROLE_USER }
+        - { path: ^/subscription, roles: ROLE_USER }
         - { path: ^/subscription/change, roles: ROLE_USER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/subscription/invoice, roles: ROLE_USER }
+        - { path: ^/subscription/payment/details, roles: ROLE_USER }
+        - { path: ^/subscription/payment/confirmation, roles: ROLE_USER }
+        - { path: ^/subscription/payment/cancel, roles: ROLE_USER }
+        - { path: ^/pdf/history, roles: ROLE_USER }
+        - { path: ^/pdf/history/show, roles: ROLE_USER }
+        - { path: ^/pdf/history/download, roles: ROLE_USER }
+        - { path: ^/pdf/history/delete, roles: ROLE_USER }
 
 when@test:
     security:

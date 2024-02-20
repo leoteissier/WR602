@@ -22,3 +22,19 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Controller\PdfController:
+        arguments:
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Controller\PdfHistoryController:
+        arguments:
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Service\PdfService:
+        arguments:
+            $gotenbergUrl: '%env(GOTENBERG_URL)%'
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
