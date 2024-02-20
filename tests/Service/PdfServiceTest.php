@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class PdfServiceTest extends TestCase
 {
     private PdfService $pdfService;
-    private $pdfDirectory;
+    private string $pdfDirectory;
 
     protected function setUp(): void
     {
@@ -32,7 +32,7 @@ class PdfServiceTest extends TestCase
             $clientMock,
             $validatorMock,
             'http://gotenberg',
-            $this->pdfDirectory = '/public/pdf',
+            $this->pdfDirectory = __DIR__ . '/../../public/pdf',
             $entityManagerMock,
             $securityMock
         );
@@ -47,6 +47,8 @@ class PdfServiceTest extends TestCase
             'url' => 'https://leoteissier.fr/',
             'pdfName' => 'mon_portfolio' // Ce nom est pour l'entité et non pour le fichier physique.
         ];
+
+        dump($this->pdfService);
 
         // Créer le répertoire où les PDF sont sauvegardés
         if (!is_dir($this->pdfDirectory)) {

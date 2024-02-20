@@ -19,11 +19,11 @@ class PdfTest extends TestCase
         $pdf->setFilename('Test.pdf');
         $pdf->setName('Test');
         $pdf->setCreatedAt();
-        $pdf->setUserId($userId);
+        $pdf->setUser($userId);
 
         // Vérification des getters
         $this->assertEquals('Test.pdf', $pdf->getFilename());
         $this->assertEquals('Test', $pdf->getName());
-        $this->assertEquals($userId, $pdf->getUserId());
+        $this->assertEquals($userId, $pdf->getUser());
     }
 }
