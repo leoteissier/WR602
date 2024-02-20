@@ -17,22 +17,22 @@ class AppFixtures extends Fixture
             [
                 'title' => 'Abonnement Gratuit',
                 'description' => 'Abonnement gratuit avec accès limité à 10 génération de pdf par mois',
-                'pdfLimit' => 10,
+                'pdfLimit' => 5,
                 'price' => 0.00,
                 'media' => 'free.png',
             ],
             [
-                'title' => 'Abonnement Standard',
-                'description' => 'Abonnement Standard avec accès limité à la génération de pdf',
-                'pdfLimit' => 50,
-                'price' => 5.00,
-                'media' => 'Standard.png',
+                'title' => 'Abonnement Mensuel',
+                'description' => 'Abonnement Premium avec accès illimité à la génération de pdf pendant un mois',
+                'pdfLimit' => -1,
+                'price' => 10.00,
+                'media' => 'Premium.png',
             ],
             [
-                'title' => 'Abonnement Premium',
-                'description' => 'Abonnement Premium avec accès limité à la génération de pdf',
-                'pdfLimit' => 200,
-                'price' => 10.00,
+                'title' => 'Abonnement Annuel',
+                'description' => 'Abonnement Premium avec accès illimité à la génération de pdf pendant un an',
+                'pdfLimit' => -1,
+                'price' => 90,
                 'media' => 'Premium.png',
             ],
         ];
@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
 
         foreach ($subscriptionsInfo as $info) {
             $subscription = new Subscription();
-            $subscription->setTitle($info['title'])
+            $subscription->setName($info['title'])
                 ->setDescription($info['description'])
                 ->setPdfLimit($info['pdfLimit'])
                 ->setPrice($info['price'])
@@ -59,13 +59,13 @@ class AppFixtures extends Fixture
             ->setIsVerified(true);
         $manager->persist($user);
 
-        // Créer 5 PDFs pour cet utilisateur
-        for ($i = 0; $i < 5; $i++) {
-            $pdf = new Pdf();
-            $pdf->setUserId($user)
-                ->setFilename('PDF ' . $i);
-            $manager->persist($pdf);
-        }
+//        // Créer 5 PDFs pour cet utilisateur
+//        for ($i = 0; $i < 5; $i++) {
+//            $pdf = new Pdf();
+//            $pdf->setUserId($user)
+//                ->setFilename('PDF ' . $i);
+//            $manager->persist($pdf);
+//        }
 
         $manager->flush();
     }
