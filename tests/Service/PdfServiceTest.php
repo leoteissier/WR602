@@ -48,11 +48,14 @@ class PdfServiceTest extends TestCase
             'pdfName' => 'mon_portfolio' // Ce nom est pour l'entité et non pour le fichier physique.
         ];
 
+        // Créer le répertoire où les PDF sont sauvegardés
+        if (!is_dir($this->pdfDirectory)) {
+            mkdir($this->pdfDirectory, 0777, true);
+        }
+
         // Obtenir le chemin du répertoire où les PDF sont sauvegardés
         $pdfDirectory = $this->pdfDirectory;
-        dump($pdfDirectory);
         $initialFiles = scandir($pdfDirectory);
-        dump($initialFiles);
 
         // Exécuter la fonctionnalité de génération de PDF
         $generatedPdfFileName = $this->pdfService->generatePdf($data);
