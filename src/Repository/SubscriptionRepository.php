@@ -45,4 +45,11 @@ class SubscriptionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findFreeSubscription()
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.price = 0')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
