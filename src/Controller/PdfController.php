@@ -38,10 +38,13 @@ class PdfController extends AbstractController
 
         // Récupérer le nombre de PDFs restants
         $pdfsRemaining = $this->pdfGeneratorService->getPdfLimitRemaining();
+        // Récupérer le nombre total de PDFs
+        $totalPDFs = $this->pdfGeneratorService->getTotalPDFsAllowed();
 
         return $this->render('pdf/index.html.twig', [
             'form' => $form->createView(),
             'pdfsRemaining' => $pdfsRemaining,
+            'totalPDFs' => $totalPDFs,
         ]);
     }
 

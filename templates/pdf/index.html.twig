@@ -11,6 +11,9 @@
             {% if pdfsRemaining != constant('PHP_INT_MAX') %}
                 <div class="form-group">
                     <p>Vous pouvez encore générer {{ pdfsRemaining }} PDF(s) ce mois-ci.</p>
+                    <div id="progress-container" style="width: 100%; background-color: #e0e0e0;">
+                        <div id="progress-bar" style="width: {{ (totalPDFs - pdfsRemaining) / totalPDFs * 100 }}%"></div>
+                    </div>
                 </div>
             {% endif %}
 
@@ -27,4 +30,23 @@
             <button type="submit" class="btn btn-primary">Convertir en PDF</button>
         </form>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #progress-bar {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px 0 0 5px; /* Arrondi sur les côtés gauche de la barre */
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
 {% endblock %}
