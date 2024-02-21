@@ -15,6 +15,7 @@ class PaymentDetailsType extends AbstractType
     {
         $builder
             ->add('cardNumber', TextType::class, [
+                'label' => 'Numéro de carte',
                 'attr' => ['placeholder' => '1234 5678 1234 5678', 'class' => 'form-control'],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -26,6 +27,7 @@ class PaymentDetailsType extends AbstractType
                 ],
             ])
             ->add('expiryDate', TextType::class, [
+                'label' => 'Date d\'expiration',
                 'attr' => ['placeholder' => 'MM/YY', 'pattern' => '^(0[1-9]|1[0-2])\/[0-9]{2}$', 'class' => 'form-control'],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -37,6 +39,7 @@ class PaymentDetailsType extends AbstractType
                 ],
             ])
             ->add('cvv', PasswordType::class, [
+                'label' => 'CVV',
                 'attr' => ['placeholder' => '123', 'pattern' => '\d{3}', 'class' => 'form-control'],
                 'constraints' => [
                     new Assert\NotBlank(),
