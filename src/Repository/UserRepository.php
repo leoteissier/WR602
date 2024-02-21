@@ -64,4 +64,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findAllWithSubscriptions()
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.subscription', 's')
+            ->addSelect('s')
+            ->getQuery()
+            ->getResult();
+    }
 }

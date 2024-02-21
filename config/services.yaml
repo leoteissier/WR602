@@ -40,3 +40,7 @@ services:
         arguments:
             $gotenbergUrl: '%env(GOTENBERG_URL)%'
             $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Scripts\CheckSubscriptions:
+        tags:
+            - { name: console.command }

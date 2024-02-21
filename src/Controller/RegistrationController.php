@@ -43,14 +43,15 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            // Récupérer l'objet Subscription avec l'ID 1
-            $subscription = $entityManager->getRepository(Subscription::class)->find(1);
-            if (!$subscription) {
-                throw new \Exception("Default subscription not found.");
+            // Récupérer l'objet Subscription gratuit
+            $freeSubscription = $entityManager->getRepository(Subscription::class)->findFreeSubscription();
+
+            if (!$freeSubscription) {
+                throw new \Exception("Abonnement gratuit non trouvé.");
             }
 
-            // Associer la Subscription à l'utilisateur
-            $user->setSubscription($subscription);
+            // Associer l'abonnement gratuit à l'utilisateur
+            $user->setSubscription($freeSubscription);
 
             $entityManager->persist($user);
             $entityManager->flush();
