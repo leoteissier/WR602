@@ -63,8 +63,5 @@
 phpstan.neon
 ###< phpstan/phpstan ###
 
-# Migration
-/migrations
-
 # Idea
 .idea
