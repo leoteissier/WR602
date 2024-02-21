@@ -151,7 +151,7 @@ class PdfService
         $qb = $this->entityManager->createQueryBuilder();
         $currentMonthPdfs = $qb->select('count(pdf.id)')
             ->from(Pdf::class, 'pdf')
-            ->where('pdf.userId = :userId')
+            ->where('pdf.user = :userId')
             ->andWhere('pdf.createdAt >= :startOfMonth')
             ->andWhere('pdf.createdAt < :startOfNextMonth')
             ->setParameter('userId', $user->getId())
@@ -163,4 +163,15 @@ class PdfService
         return max(0, $pdfLimit - $currentMonthPdfs);
     }
 
+    public function getTotalPDFsAllowed(): int
+    {
+        $user = $this->security->getUser();
+
+        if (!$user || !$user->getSubscription()) {
+            throw new \LogicException('The user must have an active subscription to access this feature.');
+        }
+
+        // Supposons que l'entité Subscription contient une propriété `pdfLimit`
+        return $user->getSubscription()->getPdfLimit();
+    }
 }
