@@ -50,11 +50,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $autoRenewSubscription = false;
+
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $subscription = null;
 
     /** @var Collection<int, Pdf> */
-    #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'userId')]
+    #[ORM\OneToMany(targetEntity: Pdf::class, mappedBy: 'user')]
     private Collection $pdfs;
 
     #[ORM\Column(type: 'boolean')]
@@ -196,6 +199,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setUpdatedAt(): static
     {
         $this->updatedAt = new \DateTime;
+
+        return $this;
+    }
+
+    public function isAutoRenewSubscription(): bool
+    {
+        return $this->autoRenewSubscription;
+    }
+
+    public function setAutoRenewSubscription(bool $autoRenewSubscription): self
+    {
+        $this->autoRenewSubscription = $autoRenewSubscription;
 
         return $this;
     }
