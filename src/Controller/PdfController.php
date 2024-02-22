@@ -32,7 +32,7 @@ class PdfController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        
+
         $form = $this->createForm(PdfFormType::class);
         $form->handleRequest($request);
 
@@ -59,23 +59,25 @@ class PdfController extends AbstractController
         $form = $this->createForm(PdfFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData(); // Utilisez getData() pour obtenir les données nettoyées
+        if ($form->isSubmitted()) {
+            try {
+                $formData = $form->getData();
 
-            // Vérifier s'il reste des PDFs à générer
-            if ($this->pdfGeneratorService->getPdfLimitRemaining() <= 0) {
-                // Rediriger vers une page pour augmenter l'abonnement
-                return $this->redirectToRoute('app_subscription_change');
+                // Vérifier s'il reste des PDFs à générer
+                if ($this->pdfGeneratorService->getPdfLimitRemaining() <= 0) {
+                    // Rediriger vers une page pour augmenter l'abonnement
+                    return $this->redirectToRoute('app_subscription_change');
+                }
+
+                $fileName = $this->pdfGeneratorService->generatePdf($formData);
+
+                $filePath = $this->pdfDirectory . '/' . $fileName;
+                $this->addFlash('success', 'Le fichier PDF a été généré avec succès.');
+                return new BinaryFileResponse($filePath);
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('error', 'Le fichier PDF n\'a pas pu être généré.');
+                return $this->redirectToRoute('app_pdf_generate');
             }
-
-            // Logique de génération du PDF
-            $fileName = $this->pdfGeneratorService->generatePdf($formData);
-            if (!$fileName) {
-                throw $this->createNotFoundException('Le fichier PDF n\'a pas pu être généré.');
-            }
-
-            $filePath = $this->pdfDirectory . '/' . $fileName;
-            return new BinaryFileResponse($filePath);
         }
 
         // Si le formulaire n'est pas soumis ou n'est pas valide, redirigez vers la page du formulaire ou gérez l'erreur différemment

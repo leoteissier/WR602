@@ -136,8 +136,6 @@ class PdfHistoryController extends AbstractController
         $this->entityManager->remove($pdf);
         $this->entityManager->flush();
 
-        $this->addFlash('success', 'PDF supprimé avec succès.');
-
         return $this->redirectToRoute('app_pdf_history');
     }
 
