@@ -44,24 +44,14 @@ class PdfService
      */
     public function generatePdf(array $data): string
     {
-        // Récupérer l'utilisateur courant
-        $user = $this->security->getUser();
-        if (!$user) {
-            throw new \LogicException('You must be logged in to generate a PDF.');
-        }
-
         $url = $data['url'] ?? null;
-        $file = $data['htmlFile'] ?? null;
         $name = $data['pdfName'] ?? null;
 
-        if ($this->isValidUrl($url)) {
-            return $this->generatePdfGeneric(['url' => $url, 'pdfName' => $name], '/forms/chromium/convert/url');
-        } elseif ($file instanceof UploadedFile) {
-            $htmlContent = file_get_contents($file->getPathname());
-            return $this->generatePdfGeneric(['htmlContent' => $htmlContent, 'pdfName' => $name], '/forms/chromium/convert/html');
+        if (!$this->isValidUrl($url)) {
+            throw new \InvalidArgumentException('Invalid URL provided.');
         }
 
-        throw new \InvalidArgumentException('You must provide a URL or a file.');
+        return $this->generatePdfGeneric(['url' => $url, 'pdfName' => $name], '/forms/chromium/convert/url');
     }
 
     /**

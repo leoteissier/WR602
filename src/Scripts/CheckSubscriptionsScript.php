@@ -10,7 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckSubscriptions extends Command
+class CheckSubscriptionsScript extends Command
 {
     protected static $defaultName = 'app:check-subscriptions';
 
