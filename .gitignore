@@ -60,3 +60,5 @@
 ###< squizlabs/php_codesniffer ###
 # Idea
 .idea
+
+.phpunit.result.cache
