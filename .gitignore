@@ -61,4 +61,8 @@
 # Idea
 .idea
 
+package-lock.json
+
+/node_modules
+
 .phpunit.result.cache
