@@ -54,11 +54,11 @@ class SubscriptionController extends AbstractController
 
     public function invoice(Request $request, int $id): Response
     {
+        // Récupérer l'abonnement sélectionné
         $subscription = $this->entityManager->getRepository(Subscription::class)->find($id);
         if (!$subscription) {
             throw $this->createNotFoundException('The subscription does not exist');
         }
-
         $request->getSession()->set('selected_subscription_id', $id);
 
         // Récupérer la date de fin d'abonnement si elle est définie
@@ -86,49 +86,53 @@ class SubscriptionController extends AbstractController
      */
     public function paymentDetails(Request $request): Response
     {
-        $form = $this->createForm(PaymentDetailsType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            $user = $this->getUser();
-            $newSubscriptionId = $request->getSession()->get('selected_subscription_id', null);
-
-            if ($newSubscriptionId) {
-                $newSubscription = $this->entityManager->getRepository(Subscription::class)->find($newSubscriptionId);
-                if ($newSubscription) {
-                    $user->setSubscription($newSubscription); // Assurez-vous que cette méthode existe et est correcte
-                    $duration = $newSubscription->getPrice() == 10 ? '+1 month' : '+1 year';
-                    $user->setSubscriptionEndAt(new \DateTime($duration));
-
-                    $this->entityManager->persist($user);
-                    $this->entityManager->flush();
-
-                    // Maintenant que tout est terminé, retirez l'ID de la session
-                    $request->getSession()->remove('selected_subscription_id');
-                    return $this->redirectToRoute('app_subscription_payment_confirmation');
-                } else {
-                    throw $this->createNotFoundException('The subscription does not exist');
-                }
-            } else {
-                throw $this->createNotFoundException('No subscription selected');
-            }
-        }
+        $request->getSession()->set('autoRenew', $request->request->get('autoRenew') === "1");
 
         return $this->render('subscription/payment_details.html.twig', [
-            'form' => $form->createView(),
+            'form' => $this->createForm(PaymentDetailsType::class)->createView(),
         ]);
     }
 
-    public function paymentConfirmation(): Response
+
+    public function paymentConfirmation(Request $request): Response
     {
+        $user = $this->getUser();
+        $newSubscriptionId = $request->getSession()->get('selected_subscription_id', null);
+        $autoRenew = $request->getSession()->get('autoRenew', false);
+        dump($newSubscriptionId);
+        dump($autoRenew);
+
+        if ($newSubscriptionId) {
+            $newSubscription = $this->entityManager->getRepository(Subscription::class)->find($newSubscriptionId);
+            if ($newSubscription) {
+                $user->setSubscription($newSubscription);
+                $duration = $newSubscription->getPrice() == 10 ? '+1 month' : '+1 year';
+                $user->setSubscriptionEndAt(new \DateTime($duration));
+                $user->setAutoRenewSubscription($autoRenew);
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+
+                $request->getSession()->remove('selected_subscription_id');
+                $request->getSession()->remove('autoRenew');
+            } else {
+                throw $this->createNotFoundException('The subscription does not exist');
+            }
+        } else {
+            throw $this->createNotFoundException('No subscription selected');
+        }
+
         return $this->render('subscription/confirmation.html.twig');
     }
+
 
     public function unsubscribe(): Response
     {
         $user = $this->security->getUser();
         $subscriptionId = $this->entityManager->getRepository(Subscription::class)->findBy(['name' => 'Abonnement Gratuit']);
         $user->setSubscription($subscriptionId[0]);
+        $user->setSubscriptionEndAt(null);
+        $user->setAutoRenewSubscription(false);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $this->redirectToRoute('app_subscription');

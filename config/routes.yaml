@@ -62,6 +62,7 @@ app_subscription_invoice:
 app_subscription_payment_details:
     path: /subscription/payment/details
     controller: App\Controller\SubscriptionController::paymentDetails
+    methods: [GET, POST]
 
 app_subscription_payment_confirmation:
     path: /subscription/payment/confirmation

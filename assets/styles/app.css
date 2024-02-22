@@ -49,6 +49,16 @@ form{
     border-radius: 5px;
 }
 
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-checkbox label {
+    margin-right: 10px;
+}
+
 button, .btn {
     width: 100%;
     padding: 10px;

@@ -54,7 +54,7 @@
         {% for message in app.flashes('error') %}
             <div class="alert alert-danger">{{ message }}</div>
         {% endfor %}
-        {{ form_start(form, {'action': path('app_subscription_payment_details')}) }}
+        {{ form_start(form, {'action': path('app_subscription_payment_confirmation')}) }}
         <div>
             {{ form_label(form.cardNumber) }}
             {{ form_widget(form.cardNumber) }}
