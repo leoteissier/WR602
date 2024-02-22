@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    pdf_directory: '%kernel.project_dir%/public/pdf' # Définir un paramètre pour le répertoire PDF
+    gotenberg_url: 'http://gotenberg'
 
 services:
     # default configuration for services in *this* file
@@ -22,3 +24,23 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Controller\PdfController:
+        arguments:
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Controller\PdfHistoryController:
+        arguments:
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Service\PdfService:
+        arguments:
+            $gotenbergUrl: '%env(GOTENBERG_URL)%'
+            $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
+
+    App\Scripts\CheckSubscriptions:
+        tags:
+            - { name: console.command }

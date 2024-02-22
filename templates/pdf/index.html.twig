@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Convertir HTML en PDF{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post" action="{{ path('app_pdf_download') }}" enctype="multipart/form-data" class="form-container">
+            {{ form_widget(form._token) }} {# Pour la protection CSRF #}
+
+            {# Condition pour afficher le nombre de PDFs restants seulement si ce n'est pas illimité #}
+            {% if pdfsRemaining != constant('PHP_INT_MAX') %}
+                <div class="form-group">
+                    <p>Vous pouvez encore générer {{ pdfsRemaining }} PDF(s) ce mois-ci.</p>
+                    <div id="progress-container" style="width: 100%; background-color: #e0e0e0;">
+                        <div id="progress-bar" style="width: {{ (totalPDFs - pdfsRemaining) / totalPDFs * 100 }}%"></div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.url.vars.id }}">Url :</label>
+                {{ form_widget(form.url, {'attr': {'id': form.url.vars.id, 'class': 'form-control'}}) }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.pdfName.vars.id }}">Nom du PDF :</label>
+                {{ form_widget(form.pdfName, {'attr': {'id': form.pdfName.vars.id, 'class': 'form-control'}}) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Convertir en PDF</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #progress-bar {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px 0 0 5px; /* Arrondi sur les côtés gauche de la barre */
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+{% endblock %}

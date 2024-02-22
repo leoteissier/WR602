@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Changer d'abonnement{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(subscriptionChangeForm, {'action': path('app_subscription_change')}) }}
+        <h1>Changer d'abonnement</h1>
+        <div class="card-deck">
+            {% for subscription in subscriptions %}
+                {% if subscription.price == 10 or subscription.price == 90 %}
+                    <div class="card subscription-card">
+                        <div class="card-header">{{ subscription.name }}</div>
+                        <div class="card-body">{{ subscription.description }}</div>
+                        <div class="card-footer">
+                            Prix : {% if subscription.price == 10 %}10€/mois{% else %}7,5€/mois (payé annuellement, total 90€){% endif %}
+                            <button type="submit" name="selected_subscription_id" value="{{ subscription.id }}" class="btn btn-primary">Acheter</button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {{ form_end(subscriptionChangeForm) }}
+    </div>
+{% endblock %}

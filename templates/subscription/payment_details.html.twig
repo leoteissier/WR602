@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enter Payment Details{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardNumberInput = document.getElementById('payment_details_cardNumber');
+
+            cardNumberInput.addEventListener('input', function(e) {
+                const input = e.target.value.replace(/\s+/g, ''); // Supprime tous les espaces existants
+                let formattedInput = '';
+                for (let i = 0; i < input.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedInput += ' '; // Ajoute un espace tous les 4 chiffres
+                    }
+                    formattedInput += input[i];
+                }
+                e.target.value = formattedInput; // Met à jour la valeur du champ avec le formatage
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const expiryDateInput = document.getElementById('payment_details_expiryDate');
+
+            expiryDateInput.addEventListener('input', function(e) {
+                let input = e.target.value.replace(/\D+/g, ''); // Supprime tout ce qui n'est pas un chiffre
+                if (input.length > 4) {
+                    input = input.substring(0, 4); // Limite à 4 chiffres
+                }
+                let formattedInput = '';
+                for (let i = 0; i < input.length; i++) {
+                    if (i === 2) {
+                        formattedInput += '/'; // Ajoute une barre oblique après le mois
+                    }
+                    formattedInput += input[i];
+                }
+                e.target.value = formattedInput; // Met à jour la valeur du champ avec le formatage
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const cvvInput = document.getElementById('payment_details_cvv');
+
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D+/g, '').substring(0, 3); // Supprime tout ce qui n'est pas un chiffre et limite à 3 chiffres
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Entrez les détails du paiement</h1>
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        {{ form_start(form, {'action': path('app_subscription_payment_details')}) }}
+        <div>
+            {{ form_label(form.cardNumber) }}
+            {{ form_widget(form.cardNumber) }}
+        </div>
+        <div>
+            {{ form_label(form.expiryDate) }}
+            {{ form_widget(form.expiryDate) }}
+        </div>
+        <div>
+            {{ form_label(form.cvv) }}
+            {{ form_widget(form.cvv) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Payer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

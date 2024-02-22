@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block body %}
+    <style>
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        section div {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin: 5px 0;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Bienvenue sur notre service de génération de PDF</h1>
+
+        <!-- Section des abonnements -->
+        <section>
+            <h2>Nos Offres d'Abonnement</h2>
+
+            <!-- Abonnement Gratuit -->
+            <div>
+                <h3>Abonnement Gratuit - 0€/mois</h3>
+                <p>Abonnement gratuit avec accès limité à <strong>10 génération de pdf par mois</strong>.</p>
+                <ul>
+                    <li>Accès limité aux fonctionnalités.</li>
+                    <li>5 générations de PDF par mois.</li>
+                </ul>
+            </div>
+
+            <!-- Abonnement Mensuel -->
+            <div>
+                <h3>Abonnement Mensuel - 10€/mois</h3>
+                <p>Abonnement Premium avec accès illimité à la génération de pdf pendant un mois.</p>
+                <ul>
+                    <li>Accès illimité à la génération de PDF.</li>
+                    <li>Support premium.</li>
+                </ul>
+            </div>
+
+            <!-- Abonnement Annuel -->
+            <div>
+                <h3>Abonnement Annuel - 90€/an</h3>
+                <p>Abonnement Premium avec accès illimité à la génération de pdf pendant un an.</p>
+                <ul>
+                    <li>Accès illimité à la génération de PDF.</li>
+                    <li>Support premium.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+{% endblock %}
