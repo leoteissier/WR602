@@ -41,6 +41,6 @@ services:
             $gotenbergUrl: '%env(GOTENBERG_URL)%'
             $pdfDirectory: '%kernel.project_dir%/%env(PDF_DIRECTORY)%'
 
-    App\Scripts\CheckSubscriptions:
+    App\Scripts\CheckSubscriptionsScript:
         tags:
             - { name: console.command }
