@@ -52,4 +52,21 @@ class SubscriptionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function isUserSubscriptionMonthly($userId): bool
+    {
+        $result = $this->createQueryBuilder('s')
+            ->join('s.users', 'u')
+            ->where('u.id = :userId')
+            ->andWhere('s.name = :subscriptionName')
+            ->setParameter('userId', $userId)
+            ->setParameter('subscriptionName', 'Abonnement Mensuel')
+            ->select('s.name')
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        // Si l'abonnement mensuel est trouvé, retourne true
+        return $result !== null;
+    }
+
 }

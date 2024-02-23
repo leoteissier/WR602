@@ -58,10 +58,11 @@
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
-
-###> phpstan/phpstan ###
-phpstan.neon
-###< phpstan/phpstan ###
-
 # Idea
 .idea
+
+package-lock.json
+
+/node_modules
+
+.phpunit.result.cache

@@ -59,6 +59,15 @@ class AppFixtures extends Fixture
             ->setIsVerified(true);
         $manager->persist($user);
 
+        // Créer un user pour les tests
+        $user = new User();
+        $user->setEmail('test@gmail.com')
+            ->setPassword(password_hash('test', PASSWORD_BCRYPT))
+            ->setRoles(['ROLE_USER'])
+            ->setSubscription($subscriptionEntities['Abonnement Gratuit'])
+            ->setIsVerified(true);
+        $manager->persist($user);
+
 //        // Créer 5 PDFs pour cet utilisateur
 //        for ($i = 0; $i < 5; $i++) {
 //            $pdf = new Pdf();

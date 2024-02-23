@@ -9,6 +9,10 @@
             <p>Abonnement : {{ subscription.name }}</p>
             <p>Prix : {{ subscription.price }} €</p>
             <p>Date de fin : {{ subscription.endDate }}</p>
+            <div class="form-checkbox">
+                <label for="autoRenew">Renouvellement automatique :</label>
+                <input type="checkbox" id="autoRenew" name="autoRenew" value="1">
+            </div>
             <button type="submit" class="btn btn-primary">Confirmer et Procéder au Paiement</button>
         </form>
     </div>

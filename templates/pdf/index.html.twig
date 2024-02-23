@@ -7,6 +7,32 @@
         <form method="post" action="{{ path('app_pdf_download') }}" enctype="multipart/form-data" class="form-container">
             {{ form_widget(form._token) }} {# Pour la protection CSRF #}
 
+            {% for flash_error in app.flashes('error') %}
+                <div class="alert alert-danger" role="alert">
+                    {{ flash_error }}
+                </div>
+            {% endfor %}
+
+            {% for flash_success in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ flash_success }}
+                </div>
+            {% endfor %}
+
+            {# Condition pour afficher le message d'erreur seulement si ce n'est pas illimité #}
+            {% if pdfsRemaining != constant('PHP_INT_MAX') and pdfsRemaining <= 0 %}
+                <div class="alert alert-danger" role="alert">
+                    Vous avez atteint la limite de PDFs que vous pouvez générer ce mois-ci. Veuillez patienter jusqu'au mois prochain.
+                </div>
+            {% endif %}
+
+            {# Condition pour afficher le message d'erreur seulement si ce n'est pas illimité #}
+            {% if pdfsRemaining != constant('PHP_INT_MAX') and pdfsRemaining <= 0 %}
+                <div class="alert alert-danger" role="alert">
+                    Vous avez atteint la limite de PDFs que vous pouvez générer ce mois-ci. Veuillez patienter jusqu'au mois prochain.
+                </div>
+            {% endif %}
+
             {# Condition pour afficher le nombre de PDFs restants seulement si ce n'est pas illimité #}
             {% if pdfsRemaining != constant('PHP_INT_MAX') %}
                 <div class="form-group">
@@ -37,6 +63,7 @@
     <style>
         #progress-container {
             width: 100%;
+            margin-bottom: 10px;
             background-color: #e0e0e0;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
