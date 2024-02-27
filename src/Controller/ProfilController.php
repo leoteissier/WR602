@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Subscription;
+use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +28,7 @@ class ProfilController extends AbstractController
         ];
 
         $subscription = $user->getSubscription();
+        $freeSubscription = $entityManager->getRepository(Subscription::class)->findFreeSubscription();
         $subscriptionName = $subscription ? $subscription->getName() : 'Aucun';
 
         if ($request->isMethod('POST')) {
@@ -66,6 +69,7 @@ class ProfilController extends AbstractController
         return $this->render('profil/index.html.twig', [
             'user' => $user,
             'subscriptionName' => $subscriptionName,
+            'freeSubscriptionId' => $freeSubscription ? $freeSubscription->getId() : null,
             'errors' => $errors,
         ]);
     }

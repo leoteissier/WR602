@@ -47,11 +47,11 @@ class PdfService
         $url = $data['url'] ?? null;
         $name = $data['pdfName'] ?? null;
 
-        if (!$this->isValidUrl($url)) {
-            throw new \InvalidArgumentException('Invalid URL provided.');
+        if ($url && $this->isValidUrl($url)) {
+            return $this->generatePdfGeneric(['url' => $url, 'pdfName' => $name], '/forms/chromium/convert/url');
+        } else {
+            throw new \InvalidArgumentException('Invalid URL.');
         }
-
-        return $this->generatePdfGeneric(['url' => $url, 'pdfName' => $name], '/forms/chromium/convert/url');
     }
 
     /**
@@ -119,8 +119,15 @@ class PdfService
             return false;
         }
 
-        $violations = $this->validator->validate($url, new Url());
-        return 0 === count($violations);
+        $violations = $this->validator->validate($url, new Url([
+            'protocols' => ['http', 'https'],
+        ]));
+
+        if(count($violations) > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function getPdfLimitRemaining(): int
